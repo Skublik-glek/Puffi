@@ -10,7 +10,7 @@ new_text = Update_text("""Добропожаловать в дивижок ви�
 choises = Choises({})
 choises.active = False
 game_gui = Game_gui(sc, background, new_text, choises)
-sound_manager = Music("data/music/embient.mp3")
+sound_manager = Music("data/music/pufiost.wav")
 
 
 class Character():
