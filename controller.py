@@ -5,12 +5,12 @@ from sound_manager import *
 
 import random
 
-background = Background('data\\pictures\\background.jpg')
+background = Background('data/pictures/background.jpg')
 new_text = Update_text("""Добропожаловать в дивижок визуальных новелл""")
 choises = Choises({})
 choises.active = False
 game_gui = Game_gui(sc, background, new_text, choises)
-sound_manager = Music("data\\music\\embient.mp3")
+sound_manager = Music("data/music/embient.mp3")
 
 
 class Character():
@@ -76,7 +76,7 @@ class GrandmaVacuumCleaner(Character):
 class StartLocacion():
     def __init__(self, character: Character):
         self.character = character
-        game_gui.background.send("data\\pictures\\background.jpg")
+        game_gui.background.send("data/pictures/background.jpg")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
@@ -93,7 +93,7 @@ class StartLocacion():
             game_gui.update_text.send_text(text="""Вы вышли из своего дом на поиски золотой щепки спустя три Долгих дня вы под подошли 
 к болоту фабрика где сидел главный робот пылесос было совсем близко но вы понимаете что через болото просто так не перебраться 
 у вас есть три варианта как его пройти""")
-            game_gui.background.send("data\\pictures\\picture1.jpg")
+            game_gui.background.send("data/pictures/picture1.jpg")
             game_gui.choises.done = False
             self.next_action = self.next2
                                            
