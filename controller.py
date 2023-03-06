@@ -76,32 +76,42 @@ class GrandmaVacuumCleaner(Character):
 class StartLocacion():
     def __init__(self, character: Character):
         self.character = character
-        game_gui.background.send("data/pictures/background.jpg")
+        game_gui.background.send("data/pictures/start_loc.jpg")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
         sound_manager.play()
-        game_gui.update_text.send_text(text="""Вы в долине пылесосов смотрите новости, и вдруг а в телеэфир взрывается незнакомец Говорит, что
-старые проводные пылесосы вышли из моды""")
+        game_gui.update_text.send_text("""Вы  спите у себя дома как вдруг  вас будет  громкий звук вы просыпаетесь""")
         self.next_action = self.next
                                        
     def next(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-            game_gui.choises.send({"Пример ответа, возвращает 1": [1, pg.Color('white'), pg.Color('lightgreen'), pg.Color('black')]})
-        if game_gui.choises.result == 1:
+            game_gui.choises.send({"Встать и выйти из дома": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                              pg.Color('white')],
+                                   "Встать и покормить домашнее животное": [2, pg.Color('black'),
+                                                                            pg.Color('lightgreen'),
+                                                                            pg.Color('white')],
+                                   "Встать и спрятаться в погребе": [3, pg.Color('black'),
+                                                                     pg.Color('lightgreen'),
+                                                                     pg.Color('white')]})
+        if game_gui.choises.result == 1 or game_gui.choises.result == 3:
             game_gui.choises.result = None
-            game_gui.update_text.send_text(text="""Вы вышли из своего дом на поиски золотой щепки спустя три Долгих дня вы под подошли 
-к болоту фабрика где сидел главный робот пылесос было совсем близко но вы понимаете что через болото просто так не перебраться 
-у вас есть три варианта как его пройти""")
-            game_gui.background.send("data/pictures/picture1.jpg")
+            game_gui.update_text.send_text("""Вы обязательно должны покормить домашний тостер""")
+            game_gui.choises.done = False
+            self.next_action = self.next
+        if game_gui.choises.result == 2:
+            game_gui.choises.result = None
+            game_gui.update_text.send_text("""Вы покормили своего питомца""")
             game_gui.choises.done = False
             self.next_action = self.next2
-                                           
+
     def next2(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-            game_gui.choises.send({"Ответ 1": [1, pg.Color('white'), pg.Color('lightgreen'), pg.Color('black')], 
-                                   "Ответ 2": [2, pg.Color('white'), pg.Color('yellow'), pg.Color('black')],
-                                   "Ответ 3": [3, pg.Color('white'), pg.Color('red'), pg.Color('black')]})
+            game_gui.choises.send({"Встать и выйти из дома": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                              pg.Color('white')],
+                                   "Встать и спрятаться в погребе": [2, pg.Color('black'),
+                                                                     pg.Color('lightgreen'),
+                                                                     pg.Color('white')]})
         if game_gui.choises.result == 2:
             game_gui.choises.result = None
             game_gui.update_text.send_text(text="""Конец теста!!! Вы выбрали 2""")
