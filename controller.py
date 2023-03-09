@@ -5,12 +5,10 @@ from sound_manager import *
 
 import random
 
-background = Background('data/pictures/background.jpg')
-new_text = Update_text("""Добропожаловать в дивижок визуальных новелл""")
-choises = Choises({})
-choises.active = False
-game_gui = Game_gui(sc, background, new_text, choises)
-sound_manager = Music("data/music/pufiost.wav")
+
+class Loc_manager():
+    def __init__(self, loc):
+        self.loc = loc
 
 
 class Character():
@@ -78,6 +76,7 @@ class StartLocacion():
         self.character = character
         game_gui.background.send("data/pictures/start_loc.jpg")
         game_gui.choises.choises = {}
+        game_gui.choises.result = None
         game_gui.choises.active = False
         game_gui.choises.done = False
         sound_manager.play()
@@ -113,17 +112,38 @@ class StartLocacion():
                                                                      pg.Color('lightgreen'),
                                                                      pg.Color('white')]})
         if game_gui.choises.result == 2:
-            game_gui.choises.result = None
-            game_gui.update_text.send_text(text="""Конец теста!!! Вы выбрали 2""")
+            loc_manager.loc = podval_loc(self.character)
         if game_gui.choises.result == 1:
             game_gui.choises.result = None
             game_gui.update_text.send_text(text="""Конец теста!!! Вы выбрали 1""")
         if game_gui.choises.result == 3:
             game_gui.choises.result = None
             game_gui.update_text.send_text(text="""Конец теста!!! Вы выбрали 3""")
-        
 
 
+class podval_loc():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/podval_loc.jpg")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""Вы в подвале""")
+        self.next_action = self.next
+
+    def next(self):
+        if game_gui.update_text.done and game_gui.next_text:
+            game_gui.next_text = False
+            game_gui.update_text.send_text("""Достижения половая тряпка получена""")
+            self.next_action = self.next3
+
+    def next3(self):
+        if game_gui.update_text.done and not game_gui.choises.done:
+                game_gui.choises.send({" Выйти из подвала": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                                  pg.Color('white')],
+                                       " Не выходить из подвала": [2, pg.Color('black'),
+                                                                                pg.Color('lightgreen'),
+                                                                                pg.Color('white')]})
 
 class TinaKandelaki():
     def __init__(self, character: Character):
@@ -131,7 +151,7 @@ class TinaKandelaki():
         print(""""Вы вышли из своего дом на поиски золотой щепки спустя три Долгих дня вы под подошли 
         к болоту фабрика где сидел главный робот пылесос было совсем близко но вы понимаете что через болото просто так не перебраться 
         у вас есть три варианта как его пройти
-""")
+    """)
         print("Выберите 1 из 3 дверей")
 
 class BossFight():
@@ -204,4 +224,10 @@ class BossFight():
         pass
 
 
-start_location = StartLocacion(Pufi(name="Пуфи"))
+background = Background('data/pictures/background.jpg')
+new_text = Update_text("""Добропожаловать в дивижок визуальных новелл""")
+choises = Choises({})
+choises.active = False
+game_gui = Game_gui(sc, background, new_text, choises)
+sound_manager = Music("data/music/pufiost.wav")
+loc_manager = Loc_manager(StartLocacion(Pufi(name="Пуфи")))
