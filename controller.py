@@ -112,6 +112,8 @@ class StartLocacion():
                                                                      pg.Color('lightgreen'),
                                                                      pg.Color('white')]})
         if game_gui.choises.result == 2:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
             loc_manager.loc = podval_loc(self.character)
         if game_gui.choises.result == 1:
             game_gui.choises.result = None
@@ -131,19 +133,23 @@ class podval_loc():
         game_gui.update_text.send_text("""Вы в подвале""")
         self.next_action = self.next
 
-    def next(self):
-        if game_gui.update_text.done and game_gui.next_text:
-            game_gui.next_text = False
+    def next2(self):
+        if game_gui.update_text.done and not game_gui.choises.done:
             game_gui.update_text.send_text("""Достижения половая тряпка получена""")
-            self.next_action = self.next3
+            game_gui.choises.done = True
 
-    def next3(self):
+    def next(self):
         if game_gui.update_text.done and not game_gui.choises.done:
                 game_gui.choises.send({" Выйти из подвала": [1, pg.Color('black'), pg.Color('lightgreen'),
                                                                   pg.Color('white')],
                                        " Не выходить из подвала": [2, pg.Color('black'),
                                                                                 pg.Color('lightgreen'),
                                                                                 pg.Color('white')]})
+        if game_gui.choises.result == 2:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            self.next_action = self.next2
+
 
 class TinaKandelaki():
     def __init__(self, character: Character):
