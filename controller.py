@@ -85,12 +85,11 @@ class StartLocacion():
                                        
     def next(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-            game_gui.choises.send({"Встать и выйти из дома": [1, pg.Color('black'), pg.Color('lightgreen'),
-                                                              pg.Color('white')],
+            game_gui.choises.send({
                                    "Встать и покормить домашнее животное": [2, pg.Color('black'),
                                                                             pg.Color('lightgreen'),
                                                                             pg.Color('white')],
-                                   "Встать и спрятаться в погребе": [3, pg.Color('black'),
+                                   "Встать и спрятаться Вниз": [3, pg.Color('black'),
                                                                      pg.Color('lightgreen'),
                                                                      pg.Color('white')]})
         if game_gui.choises.result == 1 or game_gui.choises.result == 3:
@@ -106,9 +105,8 @@ class StartLocacion():
 
     def next2(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-            game_gui.choises.send({"Встать и выйти из дома": [1, pg.Color('black'), pg.Color('lightgreen'),
-                                                              pg.Color('white')],
-                                   "Встать и спрятаться в погребе": [2, pg.Color('black'),
+            game_gui.choises.send({
+                                   "Встать и спрятаться  На нижний этаж": [2, pg.Color('black'),
                                                                      pg.Color('lightgreen'),
                                                                      pg.Color('white')]})
         if game_gui.choises.result == 2:
@@ -126,11 +124,12 @@ class StartLocacion():
 class podval_loc():
     def __init__(self, character: Character):
         self.character = character
-        game_gui.background.send("data/pictures/podval_loc.jpg")
+        game_gui.background.send("data/pictures/podval_loc3.jpg")
+        sound_manager = Music("data/music/pufiost.wav")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
-        game_gui.update_text.send_text("""Вы в подвале""")
+        game_gui.update_text.send_text("""Вы Спустились  Вниз""")
         self.next_action = self.next
 
     def next2(self):
@@ -140,9 +139,9 @@ class podval_loc():
 
     def next(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-                game_gui.choises.send({" Выйти из подвала": [1, pg.Color('black'), pg.Color('lightgreen'),
+                game_gui.choises.send({" Выйти из Дома": [1, pg.Color('black'), pg.Color('lightgreen'),
                                                                   pg.Color('white')],
-                                       " Не выходить из подвала": [2, pg.Color('black'),
+                                       "  Остаться Дома": [2, pg.Color('black'),
                                                                                 pg.Color('lightgreen'),
                                                                                 pg.Color('white')]})
         if game_gui.choises.result == 2:
@@ -235,5 +234,5 @@ new_text = Update_text("""Добропожаловать в дивижок ви�
 choises = Choises({})
 choises.active = False
 game_gui = Game_gui(sc, background, new_text, choises)
-sound_manager = Music("data/music/pufiost.wav")
+sound_manager = Music("data/music/pufiost.mp3")
 loc_manager = Loc_manager(StartLocacion(Pufi(name="Пуфи")))
