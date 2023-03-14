@@ -74,7 +74,7 @@ class GrandmaVacuumCleaner(Character):
 class StartLocacion():
     def __init__(self, character: Character):
         self.character = character
-        game_gui.background.send("data/pictures/start_loc.jpg")
+        game_gui.background.send("data/pictures/start_loc2.jpg")
         game_gui.choises.choises = {}
         game_gui.choises.result = None
         game_gui.choises.active = False
@@ -125,7 +125,7 @@ class podval_loc():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/podval_loc3.jpg")
-        sound_manager = Music("data/music/pufiost.wav")
+        sound_manager = Music("data/music/pufiost2.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
