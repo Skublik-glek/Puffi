@@ -75,11 +75,11 @@ class StartLocacion():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/start_loc2.jpg")
+        sound_manager.play_new("data/music/pufiost2.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.result = None
         game_gui.choises.active = False
         game_gui.choises.done = False
-        sound_manager.play()
         game_gui.update_text.send_text("""Вы  спите у себя дома как вдруг  вас будет  громкий звук вы просыпаетесь""")
         self.next_action = self.next
                                        
@@ -125,7 +125,6 @@ class podval_loc():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/podval_loc3.jpg")
-        sound_manager = Music("data/music/pufiost2.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
@@ -134,14 +133,16 @@ class podval_loc():
 
     def next2(self):
         if game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
             game_gui.update_text.send_text("""Достижения половая тряпка получена""")
-            game_gui.choises.done = True
+            self.next_action = self.next
 
     def next(self):
         if game_gui.update_text.done and not game_gui.choises.done:
-                game_gui.choises.send({" Выйти из Дома": [1, pg.Color('black'), pg.Color('lightgreen'),
+                game_gui.choises.send({"Выйти из Дома": [1, pg.Color('black'), pg.Color('lightgreen'),
                                                                   pg.Color('white')],
-                                       "  Остаться Дома": [2, pg.Color('black'),
+                                       "Остаться Дома": [2, pg.Color('black'),
                                                                                 pg.Color('lightgreen'),
                                                                                 pg.Color('white')]})
         if game_gui.choises.result == 2:
@@ -149,15 +150,45 @@ class podval_loc():
             game_gui.choises.done = False
             self.next_action = self.next2
 
+        if game_gui.choises.result == 1:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = street_loc(self.character)
 
+
+
+class street_loc():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/street_loc.jpg")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""Вы вышли из дома и видите как гигантский летающий робот пылесос засасывает всю вашу деревню со всеми жителями и видите 
+как он улетает на старый завод  чтоб спасти весь свой народ 
+пылесосов вы решили добраться до главного босса и отомстить ему """)
+        self.next_action = self.next
+        
+    def next(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.next_text = False
+            loc_manager.loc = TinaKandelaki(self.character)
 class TinaKandelaki():
     def __init__(self, character: Character):
         self.character = character
-        print(""""Вы вышли из своего дом на поиски золотой щепки спустя три Долгих дня вы под подошли 
-        к болоту фабрика где сидел главный робот пылесос было совсем близко но вы понимаете что через болото просто так не перебраться 
-        у вас есть три варианта как его пройти
+        game_gui.background.send("data/pictures/boloto_loc.jpg")
+        sound_manager = Music("data/music/долико.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""спустя три Долгих дня вы под подошли к болоту. фабрика, где сидел главный 
+робот пылесос, была совсем близко, но вы понимаете ,что 
+через болото просто так не перебраться. У вас есть три варианта, как его пройти
     """)
-        print("Выберите 1 из 3 дверей")
+        self.next_action = self.next
+
+    def next(self):
+        pass
 
 class BossFight():
     def __init__(self, character: Character):
@@ -234,5 +265,5 @@ new_text = Update_text("""Добропожаловать в дивижок ви�
 choises = Choises({})
 choises.active = False
 game_gui = Game_gui(sc, background, new_text, choises)
-sound_manager = Music("data/music/pufiost.mp3")
+sound_manager = Music("data/music/pufiost2.mp3")
 loc_manager = Loc_manager(StartLocacion(Pufi(name="Пуфи")))
