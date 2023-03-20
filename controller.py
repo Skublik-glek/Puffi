@@ -70,6 +70,26 @@ class GrandmaVacuumCleaner(Character):
         super().ultimate()
         return "Borsch."
 
+class epilogue():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/epilogue.jpg")
+        sound_manager = Music("data/music/долико.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""В далёком далёком будущем когда надежды  не осталось и весь мир 
+почти захватили роботы пылесосы оставалось лишь одна надежда на священного воина
+который должен был предотвратить это события и спасти весь мир да и восстанет он из пыли""")
+
+        self.next_action = self.next
+
+
+    def next(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.next_text = False
+            loc_manager.loc = StartLocacion(self.character)
+
 
 class StartLocacion():
     def __init__(self, character: Character):
@@ -188,7 +208,29 @@ class TinaKandelaki():
         self.next_action = self.next
 
     def next(self):
-        pass
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.next_text = False
+            loc_manager.loc = factory_loc(self.character)
+class factory_loc():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/factory_loc.jpg")
+        sound_manager = Music("data/music/boss.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""спустя три Долгих дня вы под подошли к болоту. фабрика, где сидел главный 
+робот пылесос, была совсем близко, но вы понимаете ,что 
+через болото просто так не перебраться. 
+У вас есть три варианта, как его пройти""")
+
+        self.next_action = self.next
+
+
+    def next(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.next_text = False
+            loc_manager.loc = factory_loc(self.character)
 
 class BossFight():
     def __init__(self, character: Character):
@@ -266,4 +308,4 @@ choises = Choises({})
 choises.active = False
 game_gui = Game_gui(sc, background, new_text, choises)
 sound_manager = Music("data/music/pufiost2.mp3")
-loc_manager = Loc_manager(StartLocacion(Pufi(name="Пуфи")))
+loc_manager = Loc_manager(epilogue(Pufi(name="Пуфи")))
