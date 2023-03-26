@@ -74,7 +74,7 @@ class epilogue():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/epilogue.jpg")
-        sound_manager = Music("data/music/долико.mp3")
+        sound_manager = Music("data/music/ep1.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
@@ -100,7 +100,7 @@ class StartLocacion():
         game_gui.choises.result = None
         game_gui.choises.active = False
         game_gui.choises.done = False
-        game_gui.update_text.send_text("""Вы  спите у себя дома как вдруг  вас будет  громкий звук вы просыпаетесь""")
+        game_gui.update_text.send_text("""Вы  спите у себя дома, как вдруг  вас будит  громкий звук. Вы просыпаетесь """)
         self.next_action = self.next
                                        
     def next(self):
@@ -184,9 +184,10 @@ class street_loc():
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
-        game_gui.update_text.send_text("""Вы вышли из дома и видите как гигантский летающий робот пылесос засасывает всю вашу деревню со всеми жителями и видите 
-как он улетает на старый завод  чтоб спасти весь свой народ 
-пылесосов вы решили добраться до главного босса и отомстить ему """)
+        game_gui.update_text.send_text("""Вы вышли из дома и видите, как гигантский летающий робот пылесос засасывает 
+всю вашу деревню со всеми жителями. Затем пылесос улетает на старый завод. 
+Чтоб спасти весь свой народ пылесосов, вы решили добраться до главного босса и отомстить ему
+ """)
         self.next_action = self.next
         
     def next(self):
@@ -201,11 +202,59 @@ class TinaKandelaki():
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
-        game_gui.update_text.send_text("""спустя три Долгих дня вы под подошли к болоту. фабрика, где сидел главный 
-робот пылесос, была совсем близко, но вы понимаете ,что 
-через болото просто так не перебраться. У вас есть три варианта, как его пройти
+        game_gui.update_text.send_text("""Спустя три долгих дня, вы подошли к болоту. Фабрика, 
+где сидел главный робот пылесос, была совсем близко, но вы понимаете,что через болото просто так не перебраться. 
+У вас есть три варианта, как его пройти:
     """)
         self.next_action = self.next
+
+    def next(self):
+        if game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.choises.send({"нырнуть в болото": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                     pg.Color('white')],
+                                   "Переплыть болото и пойти в лес": [2, pg.Color('black'),
+                                                     pg.Color('lightgreen'),
+                                                     pg.Color('white')]})
+        if game_gui.choises.result == 1:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = loc_les(self.character)
+        if game_gui.choises.result == 2:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = lab_loc(self.character)
+
+class loc_les():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/lab_loc.jpg")
+        sound_manager = Music("data/music/les2.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""Вы попадаете в секретную лабораторию Хендрикса и видите как он 
+создал целую армию лягушек чтоб захватить вашу долину ваше желание его остановить разгорается ещё сильней""")
+
+        self.next_action = self.next
+
+
+    def next(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.next_text = False
+            loc_manager.loc = factory_loc(self.character)
+
+class lab_loc():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/loc_les.jpg")
+        sound_manager = Music("data/music/les2.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""""")
+
+        self.next_action = self.next
+
 
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
@@ -219,18 +268,18 @@ class factory_loc():
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
-        game_gui.update_text.send_text("""спустя три Долгих дня вы под подошли к болоту. фабрика, где сидел главный 
-робот пылесос, была совсем близко, но вы понимаете ,что 
-через болото просто так не перебраться. 
-У вас есть три варианта, как его пройти""")
+        game_gui.update_text.send_text("""Вскоре в Подобрались  к заводу и увидете,как Хендрикс  топит вашу семейную реликвию 
+    в чане расплавленного желе чтобы не дать ему это сделать вы Вступаете с ним в бой""")
 
         self.next_action = self.next
+
 
 
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
             game_gui.next_text = False
             loc_manager.loc = factory_loc(self.character)
+
 
 class BossFight():
     def __init__(self, character: Character):
