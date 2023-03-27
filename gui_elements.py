@@ -48,7 +48,8 @@ class Background(pg.sprite.Sprite):
 
 
 class Update_text():
-    def __init__(self, text: str, text_color=(255,255,255), border_color=pg.Color('black'), rect_color=pg.Color('darkgrey')):
+    def __init__(self, text: str, text_color=(255,255,255), border_color=pg.Color('black'),
+                 rect_color=pg.Color('darkgrey')):
         self.text = text
         self.text_color = text_color
         self.border_color = border_color
@@ -64,6 +65,7 @@ class Update_text():
         self.active = True
         self.fast_render = False
         self.done = False
+        self.void_color = False
 
     def update(self):
         self.counter += 1
@@ -85,8 +87,9 @@ class Update_text():
                     else:
                         self.active_part += " "
                     self.text_counter += 1
-                pg.draw.rect(sc, self.rect_color, self.box)
-                pg.draw.rect(sc, self.border_color, self.box, 2)
+                if not self.void_color:
+                    pg.draw.rect(sc, self.rect_color, self.box)
+                    pg.draw.rect(sc, self.border_color, self.box, 2)
                 for stroka in self.stroks:
                     text_surface = stroka[0]
                     sc.blit(text_surface, stroka[1])
@@ -96,8 +99,9 @@ class Update_text():
                         self.text_pos_y))
                 self.done = True
             else:
-                pg.draw.rect(sc, self.rect_color, self.box)
-                pg.draw.rect(sc, self.border_color, self.box, 2)
+                if not self.void_color:
+                    pg.draw.rect(sc, self.rect_color, self.box)
+                    pg.draw.rect(sc, self.border_color, self.box, 2)
                 for stroka in self.stroks:
                     text_surface = stroka[0]
                     sc.blit(text_surface, stroka[1])
@@ -121,8 +125,9 @@ class Update_text():
             else:
                 self.active_part += " "
             self.text_counter += 1
-            pg.draw.rect(sc, self.rect_color, self.box)
-            pg.draw.rect(sc, self.border_color, self.box, 2)
+            if not self.void_color:
+                pg.draw.rect(sc, self.rect_color, self.box)
+                pg.draw.rect(sc, self.border_color, self.box, 2)
             for stroka in self.stroks:
                 text_surface = stroka[0]
                 sc.blit(text_surface, stroka[1])
@@ -131,8 +136,9 @@ class Update_text():
                     (sc.get_width() // 2 - (text_surface.get_width() // 2),
                      self.text_pos_y))
         else:
-            pg.draw.rect(sc, self.rect_color, self.box)
-            pg.draw.rect(sc, self.border_color, self.box, 2)
+            if not self.void_color:
+                pg.draw.rect(sc, self.rect_color, self.box)
+                pg.draw.rect(sc, self.border_color, self.box, 2)
             for stroka in self.stroks:
                 text_surface = stroka[0]
                 sc.blit(text_surface, stroka[1])
@@ -164,6 +170,7 @@ class Update_text():
         self.active = True
         self.done = False
         self.fast_render = False
+        self.void_color = False
 
 class Choises():
     def __init__(self, choises: dict):

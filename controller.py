@@ -74,20 +74,22 @@ class epilogue():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/epilogue.jpg")
-        sound_manager = Music("data/music/ep1.mp3")
+        sound_manager = Music("data/music/ep1.mp3", loop=1)
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
         game_gui.update_text.send_text("""В далёком далёком будущем когда надежды  не осталось и весь мир 
 почти захватили роботы пылесосы оставалось лишь одна надежда на священного воина
 который должен был предотвратить это события и спасти весь мир да и восстанет он из пыли""")
-
+        game_gui.update_text.sps = 15
+        game_gui.update_text.void_color = True
         self.next_action = self.next
 
 
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
             game_gui.next_text = False
+            game_gui.update_text.sps = 20
             loc_manager.loc = StartLocacion(self.character)
 
 
