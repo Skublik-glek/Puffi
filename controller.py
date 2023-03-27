@@ -84,6 +84,7 @@ class epilogue():
         game_gui.update_text.sps = 15
         game_gui.update_text.void_color = True
         self.next_action = self.next
+        # тест
 
 
     def next(self):
