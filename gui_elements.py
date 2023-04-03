@@ -212,17 +212,41 @@ class Choises():
         self.boxes = []
         self.result = None
         self.done = True
-        
+
+class Frog(pg.sprite.Sprite):
+    def __init__(self, x, filename):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.image.load(
+            filename).convert_alpha()
+        self.rect = self.image.get_rect(
+            center=(x, 300))
+        self.speed_x = 4
+        self.speed_y = 4
+        self.active = True
+
+    def update(self):
+        if not self.active:
+            return
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        if self.rect.left <= 0 or self.rect.right >= sc.get_width():
+            self.speed_x = -self.speed_x
+        if self.rect.top <= 0 or self.rect.bottom >= sc.get_height():
+            self.speed_y = -self.speed_y
+
 
 class Game_gui():
-    def __init__(self, sc, background: Background, update_text: Update_text, choises: Choises):
+    def __init__(self, sc, background: Background, update_text: Update_text, choises: Choises, frogs: pg.sprite.Group):
         self.sc = sc
         self.background = background
         self.update_text = update_text
         self.choises = choises
         self.next_text = False
+        self.frogs = frogs
 
     def update(self, event):
         self.background.update()
         self.update_text.update()
         self.choises.update(event)
+        self.frogs.draw(self.sc)
+        self.frogs.update()

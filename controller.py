@@ -244,7 +244,7 @@ class loc_les():
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
             game_gui.next_text = False
-            loc_manager.loc = factory_loc(self.character)
+            loc_manager.loc = space_loc(self.character)
 
 class lab_loc():
     def __init__(self, character: Character):
@@ -262,7 +262,54 @@ class lab_loc():
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
             game_gui.next_text = False
-            loc_manager.loc = factory_loc(self.character)
+            loc_manager.loc = space_loc(self.character)
+class space_loc():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/space_loc.jpg")
+        sound_manager = Music("data/music/psiho.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""Вы попадаете в иллюзию где вам предстоит сделать свой выбор""")
+
+        self.next_action = self.next
+
+
+
+    def next(self):
+        if game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.choises.send({"Улица": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                     pg.Color('white')],
+                                   "дом": [2, pg.Color('black'),
+                                              pg.Color('lightgreen'), pg.Color('white')],
+                                           "Болото": [3, pg.Color('black'), pg.Color('lightgreen'),
+                                                       pg.Color('white')],
+                                           "Босс": [4, pg.Color('black'),
+                                                     pg.Color('lightgreen'),
+                                               pg.Color('white')]})
+            frog = Frog(500, "data/pictures/frog.png")
+            frogs.add(frog)
+
+        if game_gui.choises.result == 1:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = street_loc(self.character)
+        if game_gui.choises.result == 2:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = StartLocacion(self.character)
+
+            if game_gui.choises.result == 2:
+                game_gui.choises.result = None
+                game_gui.choises.done = False
+                loc_manager.loc = TinaKandelaki(self.character)
+            if game_gui.choises.result == 4:
+                game_gui.choises.result = None
+                game_gui.choises.done = False
+                loc_manager.loc = factory_loc(self.character)
+
+
 class factory_loc():
     def __init__(self, character: Character):
         self.character = character
@@ -358,6 +405,7 @@ background = Background('data/pictures/background.jpg')
 new_text = Update_text("""Добропожаловать в дивижок визуальных новелл""")
 choises = Choises({})
 choises.active = False
-game_gui = Game_gui(sc, background, new_text, choises)
+frogs = pg.sprite.Group()
+game_gui = Game_gui(sc, background, new_text, choises, frogs)
 sound_manager = Music("data/music/pufiost2.mp3")
 loc_manager = Loc_manager(epilogue(Pufi(name="Пуфи")))

@@ -9,6 +9,7 @@ pg.display.set_caption("Puffi", "Puffi")
 pg.display.update()
 clock = pg.time.Clock()
 
+
 while True:
     local_event = None
     for event in pg.event.get():
