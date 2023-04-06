@@ -327,14 +327,14 @@ class space_loc():
             game_gui.choises.done = False
             loc_manager.loc = StartLocacion(self.character)
 
-            if game_gui.choises.result == 3:
-                game_gui.choises.result = None
-                game_gui.choises.done = False
-                loc_manager.loc = TinaKandelaki(self.character)
-            if game_gui.choises.result == 4:
-                game_gui.choises.result = None
-                game_gui.choises.done = False
-                loc_manager.loc = factory_loc(self.character)
+        if game_gui.choises.result == 3:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = TinaKandelaki(self.character)
+        if game_gui.choises.result == 4:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = factory_loc(self.character)
 
 
 class factory_loc():
