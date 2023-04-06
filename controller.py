@@ -1,6 +1,7 @@
 from gui_elements import *
 import pygame as pg
 from sound_manager import *
+import sys
 
 
 import random
@@ -69,6 +70,32 @@ class GrandmaVacuumCleaner(Character):
     def ultimate(self):
         super().ultimate()
         return "Borsch."
+
+class intro():
+    def __init__(self, character: Character):
+        self.character = character
+        game_gui.background.send("data/pictures/intro.jpg")
+        sound_manager = Music("data/music/intro.mp3")
+        game_gui.choises.choises = {}
+        game_gui.choises.active = False
+        game_gui.choises.done = False
+        game_gui.update_text.send_text("""""")
+        game_gui.update_text.void_color = True
+        self.next_action = self.next
+
+    def next(self):
+        if game_gui.update_text.done and not game_gui.choises.done:
+            game_gui.choises.send({"играть": [1, pg.Color('black'), pg.Color('lightgreen'),
+                                                     pg.Color('white')],
+                                   "выйти": [2, pg.Color('black'),
+                                                     pg.Color('lightgreen'),
+                                                     pg.Color('white')]})
+        if game_gui.choises.result == 1:
+            game_gui.choises.result = None
+            game_gui.choises.done = False
+            loc_manager.loc = epilogue(self.character)
+        if game_gui.choises.result == 2:
+            sys.exit()
 
 class epilogue():
     def __init__(self, character: Character):
@@ -231,7 +258,7 @@ class loc_les():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/lab_loc.jpg")
-        sound_manager = Music("data/music/les2.mp3")
+        sound_manager = Music("data/music/bb.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
@@ -300,7 +327,7 @@ class space_loc():
             game_gui.choises.done = False
             loc_manager.loc = StartLocacion(self.character)
 
-            if game_gui.choises.result == 2:
+            if game_gui.choises.result == 3:
                 game_gui.choises.result = None
                 game_gui.choises.done = False
                 loc_manager.loc = TinaKandelaki(self.character)
@@ -408,4 +435,4 @@ choises.active = False
 frogs = pg.sprite.Group()
 game_gui = Game_gui(sc, background, new_text, choises, frogs)
 sound_manager = Music("data/music/pufiost2.mp3")
-loc_manager = Loc_manager(epilogue(Pufi(name="Пуфи")))
+loc_manager = Loc_manager(intro(Pufi(name="Пуфи")))
