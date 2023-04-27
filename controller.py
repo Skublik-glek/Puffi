@@ -411,6 +411,11 @@ class bad_loc():
 роботов пылесосов а ваши деревни ненавидит 
 аас и вы больше никогда туда не пройдёте""")
 
+        self.next_action = self.next
+
+    def next(self):
+        pass
+
 class good_loc():
     def __init__(self, character: Character):
         self.character = character
