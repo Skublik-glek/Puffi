@@ -410,7 +410,7 @@ class bad_loc():
         game_gui.update_text.send_text("""Хендриксу удается вас Переубедить и заманить к себе вы становитесь приверженцев 
 роботов пылесосов а ваши деревни ненавидит 
 аас и вы больше никогда туда не пройдёте""")
-
+        game_gui.update_text.void_color = True
         self.next_action = self.next
 
     def next(self):
