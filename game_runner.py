@@ -1,8 +1,9 @@
 import pygame as pg
 import sys
 from gui_elements import sc
+from main import Game
 
-from controller import StartLocacion, Pufi, game_gui, loc_manager
+from controller import StartLocacion, Pufi, game_gui, loc_manager, game_mode
 
 ico = pg.image.load("data/pictures/ico.png")
 pg.display.set_icon(ico)
@@ -12,6 +13,7 @@ clock = pg.time.Clock()
 pg.mouse.set_visible(False)
 cursor_img = pg.image.load("data/pictures/cursor.png").convert_alpha()
 cursor_img_rect = cursor_img.get_rect()
+game = Game(sc, clock)
 
 
 while True:
@@ -40,8 +42,11 @@ while True:
                 loc_manager.loc = StartLocacion(Pufi(name="Пуфи"))
 
     clock.tick(60)
-    game_gui.update(local_event)
-    loc_manager.loc.next_action()
-    cursor_img_rect.midtop = pg.mouse.get_pos()
-    sc.blit(cursor_img, cursor_img_rect)
-    pg.display.update()
+    if game_mode.game_mode == 0:
+        game_gui.update(local_event)
+        loc_manager.loc.next_action()
+        cursor_img_rect.midtop = pg.mouse.get_pos()
+        sc.blit(cursor_img, cursor_img_rect)
+        pg.display.update()
+    elif game_mode.game_mode == 1:
+        game.update()

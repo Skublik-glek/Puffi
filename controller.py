@@ -12,6 +12,9 @@ class Loc_manager():
     def __init__(self, loc):
         self.loc = loc
 
+class Game_mode():
+    def __init__(self):
+        self.game_mode = 0
 
 class Character():
     def __init__(self, name):
@@ -287,6 +290,7 @@ class les_loc():
         game_gui.choises.active = False
         game_gui.choises.done = False
         game_gui.update_text.send_text("""Подойдя к лесу вы натыкаетесь на ещё одного прислужника босса и пытаетесь убежать от него """)
+        game_mode.game_mode = 1
 
         self.next_action = self.next
 
@@ -420,7 +424,7 @@ class good_loc():
     def __init__(self, character: Character):
         self.character = character
         game_gui.background.send("data/pictures/good_loc.jpg")
-        sound_manager = Music("data/music/psiho.mp3")
+        sound_manager = Music("data/music/embient.mp3")
         game_gui.choises.choises = {}
         game_gui.choises.active = False
         game_gui.choises.done = False
@@ -500,3 +504,4 @@ frogs = pg.sprite.Group()
 game_gui = Game_gui(sc, background, new_text, choises, frogs)
 sound_manager = Music("data/music/pufiost2.mp3")
 loc_manager = Loc_manager(intro(Pufi(name="Пуфи")))
+game_mode = Game_mode()
