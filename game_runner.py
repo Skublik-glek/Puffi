@@ -3,17 +3,15 @@ import sys
 from gui_elements import sc
 from main import Game
 
-from controller import StartLocacion, Pufi, game_gui, loc_manager, game_mode
+from controller import StartLocacion, Pufi, game_gui, loc_manager, game_mode, game, clock, game2
 
 ico = pg.image.load("data/pictures/ico.png")
 pg.display.set_icon(ico)
 pg.display.set_caption("Puffi", "Puffi")
 pg.display.update()
-clock = pg.time.Clock()
-pg.mouse.set_visible(False)
 cursor_img = pg.image.load("data/pictures/cursor.png").convert_alpha()
 cursor_img_rect = cursor_img.get_rect()
-game = Game(sc, clock)
+pg.mouse.set_visible(False)
 
 
 while True:
@@ -50,3 +48,11 @@ while True:
         pg.display.update()
     elif game_mode.game_mode == 1:
         game.update()
+        if not game.playing:
+            game_mode.game_mode = 0
+    elif game_mode.game_mode == 2:
+        pg.mouse.set_visible(True)
+        game2.update()
+        if not game2.playing:
+            game_mode.game_mode = 0
+            pg.mouse.set_visible(False)

@@ -24,7 +24,7 @@ PLAYER_GRAV = 0.8
 PLAYER_JUMP = 20
 
 WALL_IMG = 'img/wall.png'
-WALL_SPEED = 0.2
+WALL_SPEED = 0.5
 WALL_WIDTH = 100
 
 BACKGROUND_IMG = r'img/bg.png'

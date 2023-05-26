@@ -1,5 +1,6 @@
 import sys
 import random
+import time
 from collections import deque
 from sprites import *
 from settings import *
@@ -10,15 +11,10 @@ from offsetGroup import ExtendedGroup
 class Game:
     def __init__(self, sc, clock):
         self.playing = True
-        pg.init()
-        pg.mixer.init()
-
-        pg.mixer.music.load("data/music/game 2.mp3")
-        pg.mixer.music.play(-1)
-        pg.mixer.music.set_volume(0.5)
 
         self.screen = sc
-        # pg.display.set_caption(TITLE)
+
+        self.timer = time.time()
 
         self.clock = clock
         self.font_name = pg.font.match_font(FONT_NAME)
@@ -37,9 +33,13 @@ class Game:
         self.offset = 0
         self.obstacles = deque()
 
+    def start(self):
+        self.timer = time.time()
+        pg.mixer.music.load("data/music/game 2.mp3")
+        pg.mixer.music.play(-1)
+        pg.mixer.music.set_volume(0.5)
 
     def update(self):
-        print("я что-то делаю")
         now = pg.time.get_ticks()
         if now - self.mob_timer > 0:
             self.mob_timer = now + random.choice([3000, 4000, 5000, 6000])
@@ -78,12 +78,14 @@ class Game:
         wall_hits = pg.sprite.spritecollide(self.player, self.wallGroup, False)
 
         if wall_hits:
-            self.playing = False
+            self.__init__(self.screen, self.clock)
+            self.start()
 
-        self.playing = True
         if self.playing:
             self.events()
             self.draw()
+            if time.time() - self.timer >= 25:
+                self.playing = False
 
         # self.playing = True
         # if self.playing:
@@ -122,7 +124,6 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    game.run()
     pg.quit()
 
 

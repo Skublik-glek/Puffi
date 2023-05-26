@@ -1,8 +1,8 @@
-import self as self
-
 from gui_elements import *
 import pygame as pg
 from sound_manager import *
+from main import Game
+from main2 import Game as Game2
 import sys
 
 import random
@@ -290,9 +290,14 @@ class les_loc():
         game_gui.choises.active = False
         game_gui.choises.done = False
         game_gui.update_text.send_text("""Подойдя к лесу вы натыкаетесь на ещё одного прислужника босса и пытаетесь убежать от него """)
-        game_mode.game_mode = 1
 
-        self.next_action = self.next
+        self.next_action = self.next_game
+
+    def next_game(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_mode.game_mode = 1
+            game.start()
+            self.next_action = self.next
 
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
@@ -356,7 +361,13 @@ class factory_loc():
         game_gui.update_text.send_text("""Вскоре в Подобрались  к заводу и увидете,как Хендрикс  топит вашу семейную реликвию 
     в чане расплавленного желе чтобы не дать ему это сделать вы Вступаете с ним в бой""")
 
-        self.next_action = self.next
+        self.next_action = self.next_game
+
+    def next_game(self):
+        if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
+            game_mode.game_mode = 2
+            game2.start()
+            self.next_action = self.next
 
     def next(self):
         if game_gui.next_text and game_gui.update_text.done and not game_gui.choises.done:
@@ -505,3 +516,6 @@ game_gui = Game_gui(sc, background, new_text, choises, frogs)
 sound_manager = Music("data/music/pufiost2.mp3")
 loc_manager = Loc_manager(intro(Pufi(name="Пуфи")))
 game_mode = Game_mode()
+clock = pg.time.Clock()
+game = Game(sc, clock)
+game2 = Game2(sc, clock)
