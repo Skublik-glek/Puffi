@@ -48,7 +48,8 @@ class Background(pg.sprite.Sprite):
 
 
 class Update_text():
-    def __init__(self, text: str, text_color=(255,255,255), border_color=pg.Color('black'), rect_color=pg.Color('darkgrey')):
+    def __init__(self, text: str, text_color=(255,255,255), border_color=pg.Color('black'),
+                 rect_color=pg.Color('darkgrey')):
         self.text = text
         self.text_color = text_color
         self.border_color = border_color
@@ -64,6 +65,7 @@ class Update_text():
         self.active = True
         self.fast_render = False
         self.done = False
+        self.void_color = False
 
     def update(self):
         self.counter += 1
@@ -85,8 +87,9 @@ class Update_text():
                     else:
                         self.active_part += " "
                     self.text_counter += 1
-                pg.draw.rect(sc, self.rect_color, self.box)
-                pg.draw.rect(sc, self.border_color, self.box, 2)
+                if not self.void_color:
+                    pg.draw.rect(sc, self.rect_color, self.box)
+                    pg.draw.rect(sc, self.border_color, self.box, 2)
                 for stroka in self.stroks:
                     text_surface = stroka[0]
                     sc.blit(text_surface, stroka[1])
@@ -96,8 +99,9 @@ class Update_text():
                         self.text_pos_y))
                 self.done = True
             else:
-                pg.draw.rect(sc, self.rect_color, self.box)
-                pg.draw.rect(sc, self.border_color, self.box, 2)
+                if not self.void_color:
+                    pg.draw.rect(sc, self.rect_color, self.box)
+                    pg.draw.rect(sc, self.border_color, self.box, 2)
                 for stroka in self.stroks:
                     text_surface = stroka[0]
                     sc.blit(text_surface, stroka[1])
@@ -121,8 +125,9 @@ class Update_text():
             else:
                 self.active_part += " "
             self.text_counter += 1
-            pg.draw.rect(sc, self.rect_color, self.box)
-            pg.draw.rect(sc, self.border_color, self.box, 2)
+            if not self.void_color:
+                pg.draw.rect(sc, self.rect_color, self.box)
+                pg.draw.rect(sc, self.border_color, self.box, 2)
             for stroka in self.stroks:
                 text_surface = stroka[0]
                 sc.blit(text_surface, stroka[1])
@@ -131,8 +136,9 @@ class Update_text():
                     (sc.get_width() // 2 - (text_surface.get_width() // 2),
                      self.text_pos_y))
         else:
-            pg.draw.rect(sc, self.rect_color, self.box)
-            pg.draw.rect(sc, self.border_color, self.box, 2)
+            if not self.void_color:
+                pg.draw.rect(sc, self.rect_color, self.box)
+                pg.draw.rect(sc, self.border_color, self.box, 2)
             for stroka in self.stroks:
                 text_surface = stroka[0]
                 sc.blit(text_surface, stroka[1])
@@ -164,6 +170,7 @@ class Update_text():
         self.active = True
         self.done = False
         self.fast_render = False
+        self.void_color = False
 
 class Choises():
     def __init__(self, choises: dict):
@@ -205,17 +212,41 @@ class Choises():
         self.boxes = []
         self.result = None
         self.done = True
-        
+
+class Frog(pg.sprite.Sprite):
+    def __init__(self, x, filename):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.image.load(
+            filename).convert_alpha()
+        self.rect = self.image.get_rect(
+            center=(x, 300))
+        self.speed_x = 4
+        self.speed_y = 4
+        self.active = True
+
+    def update(self):
+        if not self.active:
+            return
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        if self.rect.left <= 0 or self.rect.right >= sc.get_width():
+            self.speed_x = -self.speed_x
+        if self.rect.top <= 0 or self.rect.bottom >= sc.get_height():
+            self.speed_y = -self.speed_y
+
 
 class Game_gui():
-    def __init__(self, sc, background: Background, update_text: Update_text, choises: Choises):
+    def __init__(self, sc, background: Background, update_text: Update_text, choises: Choises, frogs: pg.sprite.Group):
         self.sc = sc
         self.background = background
         self.update_text = update_text
         self.choises = choises
         self.next_text = False
+        self.frogs = frogs
 
     def update(self, event):
         self.background.update()
         self.update_text.update()
         self.choises.update(event)
+        self.frogs.draw(self.sc)
+        self.frogs.update()
